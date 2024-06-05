@@ -4,7 +4,7 @@ use stdClass;
 /**
  * Classe resposavel pelas requisições para o usuario
  */
-class Request {
+class UserRequest {
     /**
      * Métodos responsavel por definir a requisição na criação de um usuário
      *

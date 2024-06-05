@@ -4,14 +4,15 @@ use App\DTO\DTO;
 class EventDTO extends DTO{
     private $event_id;//Indetificador Geral da Tabela event
     public function __construct(
-        string $name,//coluna name
-        string $description,//coluna description
-        string $date,//coluna date
-        string $status,//coluna status
-        int $vagas,//coluna vagas
-        float $preco//coluna preco
+        array $data
     ){
-        $this->created(name: $name, description: $description, status: $status, date: $date, vagas: $vagas, preco: $preco);
+        $this->created(name: $data['name'],
+         description: $data['description'],
+          status: $data['status'],
+           date: $data['date'],
+            vagas: $data['vagas'],
+             preco: $data['preco'],
+              id: $data['id']);
     }
 
     public function setEventId(int $id) {
@@ -64,5 +65,8 @@ class EventDTO extends DTO{
     
     public function preco():float {
         return $this->DTO['preco'];
+    }
+    public function id():int {
+        return $this->DTO['id'];
     }
 }
