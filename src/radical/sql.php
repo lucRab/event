@@ -3,6 +3,7 @@ namespace src\radical;
 
 class sql
 {
+    public $table;
     public $value;
     public $param;
     public $p_value;
@@ -23,7 +24,7 @@ class sql
         for ($i=0; $i < sizeof($key); $i++) { 
             $this->p_column = $this->p_column.':'.$key[$i];
             if(!$i == sizeof($key) && sizeof($key) > 1) {
-                $this->values = $this->p_column.', ';
+                $this->p_value = $this->p_column.', ';
             }
         }
         $this->value = $value;

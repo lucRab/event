@@ -3,10 +3,12 @@ namespace App\http\controller;
 
 require __DIR__."/../request/RequestUser.php";
 
-use App\http\request\Request;
+use App\http\request\UserRequest;
 use App\http\controller\AuthController;
 use App\model\User;
+use App\DTO\UserDTO;
 use Exception;
+use src\radical\update;
 use stdClass;
 /**
  * Classe responsavel pelo controle do usuário
@@ -14,6 +16,7 @@ use stdClass;
 class UserController {
     
     protected User $repository;
+    protected UserDTO $DTO;
    /**
     * Método construtor da classe
     */
@@ -25,8 +28,8 @@ class UserController {
      */
     public function index() {
         try{
-            $a = $this->repository->getAll();
-            return $a;
+            //$a = $this->repository->getAll();
+            //return $a;
         }catch(Exception $e) {
             return $e->getMessage();
         }
@@ -36,16 +39,19 @@ class UserController {
      */
     public function store(stdClass $request) {
         try{
+            //inicia a transação
             $this->repository->transaction();
-            $param = Request::createRequest($request);
-            $id = $this->repository->create($param);
-            if(gettype($id) == "string") throw new Exception($id, "2002");
-            $param += ['iduser' => strval($id)];
-            $token = AuthController::cadastroToken($param);
+                //-------------------------------------//
+                $param = UserRequest::createRequest($request);//verificação dos dados
+                $this->initDTO($param);//inicia o objeto DTO
+                $this->repository->create($this->DTO);//realizar o insert
+                $id = $this->DTO->user_ID();
+                $param += ['iduser' => strval($id)];
+                $token = AuthController::cadastroToken($param);
             $this->repository->commit();
             return json_encode($token);
         }catch(Exception $e){
-           $this->repository->rollback();
+            $this->repository->rollback();
             http_response_code(401);
             if($e->getCode() == "23000") return json_encode("Esse email já estar registrado");
             return json_encode($e->getMessage());
@@ -56,9 +62,15 @@ class UserController {
      */
     public function update(stdClass $request) {
         try {
-            $param = Request::updateRequest($request);
-            $this->repository->update($param);
+            $this->repository->transaction();
+            $param = UserRequest::updateRequest($request);
+            $this->initDTO($param);//inicia o objeto DTO
+            $this->DTO->setUserId($param['id']);
+            $this->repository->update($this->DTO);
+            $this->repository->commit();
         }catch(Exception $e) {
+            var_dump($e->getMessage());
+            $this->repository->rollback();
             return $e->getMessage();
         }
     }
@@ -67,8 +79,9 @@ class UserController {
      */
     public function destroy(stdClass $request) {
         try{
-            $param = Request::destroyRequest($request);
-            $this->repository->update($param);
+            $param = UserRequest::destroyRequest($request);
+            $this->DTO->setUserId($param['id']);
+            $this->repository->update($this->DTO);
         }catch(Exception $e) {
             return $e->getMessage();
         }
@@ -76,7 +89,7 @@ class UserController {
  
     public function login(stdClass $request) {
         try{
-            $param = Request::loginRequest($request);
+            $param = UserRequest::loginRequest($request);
             $get = $this->repository->getLogin(['email' => $param['email']]);
             if(!password_verify($param['password'], $get['password'])) throw new Exception ('Senha incorreta');
             $token = AuthController::cadastroToken($get);
@@ -87,5 +100,7 @@ class UserController {
             return json_encode($e->getMessage());
         }
     }
-
+    private function initDTO(array $data):void{
+        $this->DTO = new UserDTO($data);
+    }
 }

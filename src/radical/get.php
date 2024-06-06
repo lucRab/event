@@ -11,7 +11,7 @@
     }
 
     public function all() {
-        $this->values = "*";
+        $this->column = "*";
         $this->param = null;
     }
  }

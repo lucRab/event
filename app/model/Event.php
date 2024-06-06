@@ -17,16 +17,14 @@ class Event extends Model {
         if(gettype($this->conect) == "object") {
             $param = $this->paramProcessing($DTO);
             //perarando o sql a ser executado
-            $insert = $this->conect->prepare("INSERT INTO event(name, description, status, vagas, preco, date) VALUES(:name, :description, :status, :vagas, :preco, :date)");
+            $insert = $this->conect->prepare("INSERT INTO event(name, description, status, vagas, preco, date, userID) VALUES(:name, :description, :status, :vagas, :preco, :date, :id)");
             //executa o sql e verifica se deu aldo de errado
-            
             if($insert->execute($param)) {
                 $id = $this->conect->lastInsertId();
                 $DTO->setEventId($id);
-                return intval($id);
-            } 
-            
-            throw new Exception("[ATENÇÃO]Erro de execução", 30);
+            }else{
+                throw new Exception("[ATENÇÃO]Erro de execução", 30);
+            }
         }
         return $this->conect;//retorna o erro caso haja.
     }

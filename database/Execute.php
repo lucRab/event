@@ -7,12 +7,12 @@ use src\radical\tables;
 //--------------------------------------------|| START ||----------------------------------------------//
     Database::start();
 //-----------------------------------------|| TABLE  USER||--------------------------------------------//
-    // $user = new tables();
-    // $user->id('user_id');
-    // $user->string('name', '100');
-    // $user->string('email', '80','UNIQUE');
-    // $user->string('password','100');
-    // Database::create('user',$user);
+    $user = new tables();
+    $user->id('user_id');
+    $user->string('name', '100');
+    $user->string('email', '80','UNIQUE');
+    $user->string('password','100');
+    Database::create('user',$user);
 
     //  $event = new tables();
     //  $event->id('event_id');
