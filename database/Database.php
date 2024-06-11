@@ -37,12 +37,16 @@ class Database {
                 $quary = "CREATE TABLE ".$tablename." (";
                 $t = sizeof($column);
             } 
-
             for ($i = 0; $i < $t; $i++) { //monta a quary com todas as columnas a serem criadas
                 $quary = $quary.' '.$column[$i]['name'].' '.$column[$i]['type'].' '.$column[$i]['constraint'];
                 if($i != $t - 1 && $t > 1) {
                     $quary = $quary.',';
                 }
+            }
+            if(!empty($table->constraint)) $quary = $quary.' , ';
+            for ($i = 0; $i < sizeof($table->constraint); $i ++) {
+                $quary = $quary.$table->constraint[$i];
+                if ($i != sizeof($table->constraint) - 1) $quary = $quary.' , ';
             }
             $quary = $quary.')';
             //executa a quary

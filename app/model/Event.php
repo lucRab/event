@@ -17,7 +17,7 @@ class Event extends Model {
         if(gettype($this->conect) == "object") {
             $param = $this->paramProcessing($DTO);
             //perarando o sql a ser executado
-            $insert = $this->conect->prepare("INSERT INTO event(name, description, status, vagas, preco, date, userID) VALUES(:name, :description, :status, :vagas, :preco, :date, :id)");
+            $insert = $this->conect->prepare("INSERT INTO event(name, description, status, vagas, preco, date, user_id) VALUES(:name, :description, :status, :vagas, :preco, :date, :id)");
             //executa o sql e verifica se deu aldo de errado
             if($insert->execute($param)) {
                 $id = $this->conect->lastInsertId();
@@ -57,9 +57,10 @@ class Event extends Model {
     public function delete(&$DTO) {
         //verifica  se não algum erro na conexão.
         if(gettype($this->conect) == "object") {
-            $param['id'] = $DTO->event_id();
+            $param['event_id'] = $DTO->event_id();
+            $param['user_id'] = $DTO->id();
             //perarando o sql a ser executado
-            $insert = $this->conect->prepare("DELETE FROM event WHERE event_id= :id");
+            $insert = $this->conect->prepare("DELETE FROM event WHERE event_id= :event_id and user_id= :user_id");
             //executa o sql e verifica se deu aldo de errado
             if($insert->execute($param)) return true;
             throw new Exception("[ATENÇÃO]Erro de execução", 30);
@@ -88,7 +89,8 @@ class Event extends Model {
                 'status' => $DTO->status(),
                 'date' => $DTO->date(),
                 'preco' => $DTO->preco(),
-                'vaga' => $DTO->vaga()
+                'vagas' => $DTO->vagas(),
+                'id' => $DTO->id(),
             ];
             return $param;
         }catch(Exception $e) {

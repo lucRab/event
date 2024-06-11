@@ -18,10 +18,11 @@ class EventRequest {
 
         if(strlen($param->name) < 3) throw new \Exception("O campo nome deve ter pelo menos 3 caracteres!", 2);
 
-        $result = ['name'=> $param->name, 'descriprion'=> $param->description,
+        $result = ['name'=> $param->name, 'description'=> $param->description,
                     'date' => $param->date, 'vagas' => (int) $param->vagas,
                     'preco' => (float) $param->preco, 
-                    'status' => 'open', 'id' => $param->id];
+                    'status' => 'open', 'event_id' => (int) $param->id
+                  ];
         return $result;
     }
     /**
@@ -36,8 +37,10 @@ class EventRequest {
         if(strlen($param->password) < 3) throw new \Exception("O campo senha deve ter pelo menos 3 caracteres!", 2);
 
         $result = [ 'name'=> $param->name, 'descriprion'=> $param->description,
-        'date' => $param->date, 'vagas' => (int) $param->vagas,
-        'preco' => (float) $param->preco, 'status' => 'open', 'id' => $param->id];
+            'date' => $param->date, 'vagas' => (int) $param->vagas,
+            'preco' => (float) $param->preco, 'status' => $param->status,
+            'user_id' => (int) $param->userid, 'event_id' => (int) $param->eventid
+        ];
         return $result;
     }
     /**
@@ -47,7 +50,12 @@ class EventRequest {
      * @return array
      */
     static function destroyRequest(stdClass $param ) {
-        $result = [ 'id' => $param->id];
+        
+        $result = [ 'name'=> '', 'descriprion'=> '',
+            'date' => '', 'vagas' => null,
+            'preco' => null, 'status' => '',
+            'user_id' => (int) $param->userid, 'event_id' => (int) $param->eventid
+        ];
         return $result;
     }
 

@@ -7,10 +7,9 @@ class TicktDTO extends DTO{
     private string $buy_date;//Data da compra de ingresso
     
     public function __construct(
-        int $user_id,//coluna user_id
-        int $event_id,//coluna event_id
+        array $data
     ) {
-        $this->created(user_id: $user_id, event_id: $event_id);
+        $this->created(user_id: $data['userid'], event_id: $data['eventid']);
     }
 
     public function setTicktId($id) {

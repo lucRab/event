@@ -4,6 +4,7 @@ namespace src\radical;
 class tables
 {
     public $column = [];
+    public $constraint = [];
     public function id(string $name = 'id') {
         $this->column['id'] = ['name' => $name, 'type' => 'INT', 'constraint' => 'PRIMARY KEY AUTO_INCREMENT'];     
     }
@@ -27,7 +28,7 @@ class tables
         array_push($this->column,['name' => $name, 'type' =>$type.$tamanho, 'constraint' => $constraint]);
     }
 
-    public function  foreignkey($column, $tablereferences, $columnreferences) {
-        array_push($this->column, 'FOREIGN KEY ('.$column.') REFERENCES '.$tablereferences.' ('.$columnreferences.')');
+    public function  foreignkey(string $column,string $tablereferences,string $columnreferences) {
+        array_push($this->constraint, 'FOREIGN KEY ('.$column.') REFERENCES '.$tablereferences.' ('.$columnreferences.')');
     }
 }

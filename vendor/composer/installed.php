@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '0b21955bbbb547ac7637922b9bdfeb778d4c9a15',
+        'reference' => 'b37e5416a6a1c833e572aa045c798ac7d433f453',
         'name' => 'rabelo/mypi',
         'dev' => true,
     ),
@@ -52,7 +52,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '0b21955bbbb547ac7637922b9bdfeb778d4c9a15',
+            'reference' => 'b37e5416a6a1c833e572aa045c798ac7d433f453',
             'dev_requirement' => false,
         ),
         'symfony/polyfill-ctype' => array(

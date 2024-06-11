@@ -5,6 +5,7 @@ use src\radical\tables;
 use App\model\Table;
 use App\model\User;
 use App\http\controller\UserController;
+use App\http\controller\EventController;
 
 // $user = new User();
 // $user->delete->where('iduser', '=',40 );
@@ -42,10 +43,12 @@ use App\http\controller\UserController;
 //
 //$a = database::refresh();
 
-$teste = new UserController();
+$teste = new EventController();
 $obj = new stdClass;
 $obj->name = "Lucas Rabelo";
-$obj->email = "slucas@gmail.com";
-$obj->password = "123456a";
+$obj->description = "slucas@gmail.com";
+$obj->vagas = "123456a";
+$obj->preco = "10,00";
+$obj->date = "2004-05-21";
 $obj->id = 7;
-$teste->update($obj);
+$teste->store($obj);

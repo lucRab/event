@@ -2,19 +2,18 @@
 namespace App\http\controller;
 
 require __DIR__."/../request/RequestEvent.php";
-use App\model\Event;
-use App\http\request\EventRequest;
-use App\DTO\EventDTO;
+use App\model\Tickt;
+use App\DTO\TicktDTO;
+use App\http\request\TicktRequest;
 use stdClass;
 use Exception;
-class EventController {
-    
-    protected Event $repository;
-    protected EventDTO $DTO;
 
+class TicktController {
+    protected Tickt $repository;
+    protected TicktDTO $DTO;
 
     public function __construct() {
-        $this->repository = new Event();
+        $this->repository = new Tickt();
     }
 
     public function index() {}
@@ -24,8 +23,8 @@ class EventController {
     public function store(stdClass $request) {
         try{
             $this->repository->transaction();
-                $param = EventRequest::createRequest($request);
-                $this->initDTO($param);//inicia o objeto DTO
+                $param = TicktRequest::createRequest($request);
+                $this->initDTO($param);
                 $this->repository->create($this->DTO);
             $this->repository->commit();
         }catch(Exception $e) {
@@ -39,9 +38,11 @@ class EventController {
     public function update(stdClass $request) {
         try {
             $this->repository->transaction();
-                $param = EventRequest::updateRequest($request);
+                $param =TicktRequest::updateRequest($request);
                 $this->initDTO($param);//inicia o objeto DTO
-                $this->DTO->setEventId($param['event_id']);
+                $this->DTO->setTicktId($param['event_id']);
+                $this->DTO->setID($param['id']);
+                $this->DTO->setBuyDate($param['buydate']);
                 $this->repository->update($this->DTO);
             $this->repository->commit();
         }catch(Exception $e) {
@@ -49,20 +50,12 @@ class EventController {
             return $e->getMessage();
         }
     }
+    
     public function show() {}
 
-    public function destroy(stdClass $request) {
-        try{
-            $param = EventRequest::destroyRequest($request);
-            $this->DTO->setEventId($param['event_id']);
-            $this->DTO->setID($param['user_id']);
-            $this->repository->update($this->DTO);
-        }catch(Exception $e) {
-            return $e->getMessage();
-        }
-    }
-
+    public function destroy(stdClass $request) {}
+    
     private function initDTO(array $data):void{
-        $this->DTO = new EventDTO($data);
+        $this->DTO = new TicktDTO($data);
     }
 }

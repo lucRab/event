@@ -12,7 +12,7 @@ class EventDTO extends DTO{
            date: $data['date'],
             vagas: $data['vagas'],
              preco: $data['preco'],
-              id: $data['id']);
+              id: $data['event_id']);
     }
 
     public function setEventId(int $id) {
@@ -40,6 +40,9 @@ class EventDTO extends DTO{
         $this->DTO['preco'] = $preco;
     }
 
+    public function setID(int $id) {
+        $this->DTO['id'] = $id;
+    }
     public function eventID() {
         return $this->event_id;
     }
